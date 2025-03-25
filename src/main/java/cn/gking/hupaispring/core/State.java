@@ -10,6 +10,7 @@ public class State {
     List<Card> topCards;
     List<Player> players;
     int claim;
+    int step;
     public State(RoomConfig roomConfig) {
         this.roomConfig = roomConfig;
     }

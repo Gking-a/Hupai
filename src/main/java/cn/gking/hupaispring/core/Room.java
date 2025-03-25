@@ -8,5 +8,5 @@ public class Room {
     RoomConfig config;
     List<Player> players= new ArrayList<>();
     State gameState;
-    Room(RoomConfig config, ServerSocket serverSocket){}
+    public Room(RoomConfig config){}
 }
