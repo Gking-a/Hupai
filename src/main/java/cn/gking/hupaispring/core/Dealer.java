@@ -1,7 +1,7 @@
 package cn.gking.hupaispring.core;
 
 import java.util.List;
-
+//发牌器
 public class Dealer {
     int poke,king,player,quit;
 
@@ -16,5 +16,5 @@ public class Dealer {
     }
     public void refresh(){}
     public void create(){}
-    public List<Card> getFinalPoke(){}
+    public List<List<Card>> getFinalPoke(){}
 }

@@ -5,7 +5,7 @@ public class RoomConfig {
     int numberJoker;
     int numberQuit;
     int numberPlayer;
-
+    Dealer dealer;
     public RoomConfig(int numberPoke, int numberJoker, int numberQuit, int numberPlayer) {
         this.numberPoke = numberPoke;
         this.numberJoker = numberJoker;
