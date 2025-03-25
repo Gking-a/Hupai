@@ -8,5 +8,4 @@ public class Player {
     int team=-1;
     String name;
     List<Card> cards=new ArrayList<>();
-    NetworkHandler handler;
 }

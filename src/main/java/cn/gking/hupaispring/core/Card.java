@@ -1,6 +1,8 @@
 package cn.gking.hupaispring.core;
 
 public class Card {
-    int Rank;
-    int Suit;
+    //1-13
+    int rank;
+    //1-5
+    int suit;
 }

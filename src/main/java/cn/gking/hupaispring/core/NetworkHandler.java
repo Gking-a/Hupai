@@ -9,7 +9,7 @@ import java.io.InputStream;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
-
+@Deprecated
 public class NetworkHandler {
     Socket socket;
     Map<String, OnResponseListener> actions=new HashMap<>();
