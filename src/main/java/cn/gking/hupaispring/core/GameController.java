@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameController {
-    RoomConfig config;
+    public RoomConfig config;
     public List<Player> players= new ArrayList<>();
-    State gameState;
+    public State gameState;
     DisposeCallback disposeCallback;
     public GameController(RoomConfig config){}
     public void setDisposeCallback(DisposeCallback disposeCallback){

@@ -52,14 +52,22 @@ public class MyWebController{
                 }
             }
             else {
-                new int[gameController.players.size()]
+                int[] ints = new int[gameController.config.numberPlayer];
+                Iterator<Player> iterator = gameController.players.iterator();
                 while (iterator.hasNext()){
                     Player next = iterator.next();
-                    if(next.getPosition()==pos)po=next;
-                    if(Objects.equals(next.getName(), name))pn=next;
+                    ints[next.getPosition()-1]=1;
                 }
+                int p=0;
+                for (int i = 0; i < ints.length; i++) {
+                    if(ints[i]==0){
+                        p=i+1;
+                        break;
+                    }
+                }
+                o.setPosition(p);
                 gameController.players.add(o);
-                return "{\"status\":200;\"pos\":"++"}";
+                return "{\"status\":200;\"pos\":"+p+"}";
             }
         }
     }

@@ -1,10 +1,10 @@
 package cn.gking.hupaispring.core;
 
 public class RoomConfig {
-    int numberPoke;
-    int numberJoker;
-    int numberQuit;
-    int numberPlayer;
+    public int numberPoke;
+    public int numberJoker;
+    public int numberQuit;
+    public int numberPlayer;
     int id;
     Dealer dealer;
     public RoomConfig(int numberPoke, int numberJoker, int numberQuit, int numberPlayer) {
