@@ -6,6 +6,7 @@ public class ClientAction {
     int action;
     List<Card> cards;
     int roomid;
+    String name;
 
     public ClientAction(int action, List<Card> cards, int roomid) {
         this.action = action;

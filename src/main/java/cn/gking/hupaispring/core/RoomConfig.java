@@ -5,13 +5,15 @@ public class RoomConfig {
     public int numberJoker;
     public int numberQuit;
     public int numberPlayer;
-    int id;
+    public int id;
     Dealer dealer;
-    public RoomConfig(int numberPoke, int numberJoker, int numberQuit, int numberPlayer) {
+
+    public RoomConfig(int numberPoke, int numberJoker, int numberQuit, int numberPlayer, int id) {
         this.numberPoke = numberPoke;
         this.numberJoker = numberJoker;
         this.numberQuit = numberQuit;
         this.numberPlayer = numberPlayer;
         if(numberQuit<0)this.numberQuit=(13*numberPoke+numberJoker)%numberPlayer;
+        this.id = id;
     }
 }

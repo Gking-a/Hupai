@@ -19,7 +19,7 @@ public class Flag {
 
     public static int CARD_JOKER=5;
 
-    public static int REGISTER_PLAYER=1;
-    public static int CARD_POST=2;
-    public static int CARD_QUIT=3;
+    public static int REGISTER_PLAYER=10;
+//    public static int CARD_POST=2;
+//    public static int CARD_QUIT=3;
 }

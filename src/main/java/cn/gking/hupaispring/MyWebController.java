@@ -18,7 +18,10 @@ public class MyWebController{
     @ResponseBody
     @GetMapping("/room")
     public String room(@RequestParam int id,@RequestParam(defaultValue = "0") int step){
-        return null;
+        GameController gameController = rooms.get(id);
+        if(gameController==null)return "";
+        if(step==0)return gameController.lastChange();
+        return gameController.getStep(step);
     }
     @GetMapping("/act")
     public void room(@RequestBody ClientAction action){
@@ -32,11 +35,11 @@ public class MyWebController{
     @ResponseBody
     public String join(@RequestParam int id,@RequestParam String name,@RequestParam(defaultValue = "0")int pos){
         GameController gameController = rooms.get(id);
-        if(gameController==null)return "";
+        if(gameController==null)return "{\"status\"=500}";
         else{
             Player o = new Player(name);
             if(gameController.players.contains(o)){
-                if(pos==0)return "";
+                if(pos==0)return "{\"status\"=500}";
                 else {
                     Iterator<Player> iterator = gameController.players.iterator();
                     Player po=null,pn=null;
@@ -48,7 +51,7 @@ public class MyWebController{
                     po.setPosition(pn.getPosition());
                     pn.setPosition(pos);
                     gameController.players.get(gameController.players.indexOf(o)).setPosition(pos);
-                    return "{\"status\"=200;}";
+                    return "{\"status\"=200}";
                 }
             }
             else {
@@ -67,7 +70,12 @@ public class MyWebController{
                 }
                 o.setPosition(p);
                 gameController.players.add(o);
-                return "{\"status\":200;\"pos\":"+p+"}";
+                if(gameController.players.size()==gameController.config.numberPlayer){
+                    gameController.startGame(gameController1 -> {
+                        rooms.remove(gameController1.config.id);
+                    });
+                }
+                return "{\"status\":200,\"pos\":"+p+"}";
             }
         }
     }
@@ -75,7 +83,7 @@ public class MyWebController{
     @GetMapping("/createroom")
     public String createroom(@RequestParam int p,@RequestParam int k,@RequestParam int pl,@RequestParam int q){
         int i = random.nextInt(1,1000000);
-        GameController gameController = new GameController(new RoomConfig(p,k,q,pl));
+        GameController gameController = new GameController(new RoomConfig(p,k,q,pl,i));
         rooms.put(i, gameController);
         return new NetworkProtocol().room_init(Flag.STATE_WAITING_CONNECTION).step(i).toString();
     }

@@ -10,6 +10,7 @@ public class Player {
     String name;
     List<Card> cards=new ArrayList<>();
     int position;
+    int cardnum;
     public Player(String name) {
         this.name = name;
     }
@@ -41,5 +42,9 @@ public class Player {
 
     public void setName(String name) {
         this.name = name;
+    }
+    void addCards(List<Card> cards){
+        this.cards.addAll(cards);
+        this.cardnum=cards.size();
     }
 }
