@@ -16,5 +16,7 @@ public class Dealer {
     }
     public void refresh(){}
     public void create(){}
-    public List<List<Card>> getFinalPoke(){}
+    public List<List<Card>> getFinalPoke(){
+        return null;
+    }
 }
