@@ -15,8 +15,10 @@ public class GameController {
     interface DisposeCallback {
         void onFinish(GameController gameController);
     }
-    void challenge(Player p){
-        AbstractStateChange action = Rules.action(gameState, Flag.ACTION_CHALLENGE);
+
+    //下面为action解析
+    public void solve(int actionType){
+        AbstractStateChange RulesReturn=Rules.action(gameState,actionType);
 
     }
 }

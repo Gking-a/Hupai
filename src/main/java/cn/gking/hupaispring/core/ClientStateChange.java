@@ -9,6 +9,7 @@ public class ClientStateChange {
     int action;
     int cardNum;
     int step;
+    //计时器
 
     public int getTurn_to_player() {
         return turn_to_player;
