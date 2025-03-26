@@ -9,6 +9,7 @@ public class State {
     List<Card> stackCards;
     List<Card> topCards;
     List<Player> players;
+    List<ClientStateChange> changes;
     int claim;
     int step;
     public State(RoomConfig roomConfig) {
