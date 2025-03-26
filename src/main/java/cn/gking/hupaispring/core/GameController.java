@@ -25,8 +25,8 @@ public class GameController {
     public interface DisposeCallback {
         void onFinish(GameController gameController);
     }
-    void challenge(){
-        AbstractStateChange action = Rules.action(gameState, Flag.ACTION_CHALLENGE);
+    public void solve(int actionType){
+        AbstractStateChange RulesReturn = Rules.action(gameState, actionType);
     }
     public void startGame(DisposeCallback disposeCallback){
         this.disposeCallback=disposeCallback;
