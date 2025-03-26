@@ -28,7 +28,8 @@ public class MyWebController{
         GameController gameController = rooms.get(action.getRoomid());
         if(gameController==null)return;
         else{
-            //do you parse here
+            //传参
+            gameController.solve(action.getAction());
         }
     }
     @GetMapping("/join")

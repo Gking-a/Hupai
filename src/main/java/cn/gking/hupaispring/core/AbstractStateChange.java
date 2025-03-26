@@ -1,9 +1,10 @@
 package cn.gking.hupaispring.core;
 
 public class AbstractStateChange {
+    //下一个出牌
     int turn_to_player;
+    //牌给谁(default用于保留)
     int poke_to_player;
-    int action;
 
     public int getTurn_to_player() {
         return turn_to_player;
@@ -19,13 +20,5 @@ public class AbstractStateChange {
 
     public void setPoke_to_player(int poke_to_player) {
         this.poke_to_player = poke_to_player;
-    }
-
-    public int getAction() {
-        return action;
-    }
-
-    public void setAction(int action) {
-        this.action = action;
     }
 }
