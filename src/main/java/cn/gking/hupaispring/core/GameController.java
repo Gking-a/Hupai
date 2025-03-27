@@ -25,23 +25,20 @@ public class GameController {
     public interface DisposeCallback {
         void onFinish(GameController gameController);
     }
-    public void solve(int actionType){
+    public void solve(int actionType, List<Card>ClientCards){
+        //传参运算
         AbstractStateChange RulesReturn = Rules.action(gameState, actionType);
 
+        Player copyCurrentPlayer = gameState.currentPlayer;       //copy
         //turn to player solve & update current player
-        if(RulesReturn.getTurn_to_player()==Flag.NEXT_PLAYER){
-            gameState.currentPlayer=players.get((players.indexOf(gameState.currentPlayer)+1)%config.numberPlayer);
-        }else if(RulesReturn.getTurn_to_player()==Flag.LAST_POKER){
-            gameState.currentPlayer=gameState.lastPlayer;
-        }else if(RulesReturn.getTurn_to_player()==Flag.DEFAULT_NO_CHANGE){
+        if (RulesReturn.getTurn_to_player() == Flag.NEXT_PLAYER) {
+            gameState.currentPlayer = players.get((players.indexOf(gameState.currentPlayer) + 1) % config.numberPlayer);
+        } else if (RulesReturn.getTurn_to_player() == Flag.LAST_POKER) {
+            gameState.currentPlayer = gameState.lastPlayer;
+        } else if (RulesReturn.getTurn_to_player() == Flag.DEFAULT_NO_CHANGE) {
             endGame(gameState.lastPlayer);
             return;
         }
-        //update last player
-        if(actionType==Flag.ACTION_CHALLENGE){
-            gameState.lastPlayer=null;
-        }
-
 
         //poke to player solve
         if(RulesReturn.getPoke_to_player()==Flag.LAST_POKER){
@@ -51,7 +48,6 @@ public class GameController {
                 gameState.lastPlayer.cardnum++;
             }
             gameState.stackCards.clear();
-            gameState.stackCards=new ArrayList<>();
 
             //topcards to last player
             for(Card it:gameState.topCards){
@@ -59,8 +55,42 @@ public class GameController {
                 gameState.lastPlayer.cardnum++;
             }
             gameState.topCards.clear();
-            gameState.topCards=new ArrayList<>();
+        }else if(RulesReturn.getPoke_to_player()==Flag.CHALLENGER){
+            //stackcards to challenge player
+            for(Card it:gameState.stackCards){
+                copyCurrentPlayer.cards.add(it);
+                copyCurrentPlayer.cardnum++;
+            }
+            gameState.stackCards.clear();
+
+            //topcards to challenge player
+            for(Card it:gameState.topCards){
+                copyCurrentPlayer.cards.add(it);
+                copyCurrentPlayer.cardnum++;
+            }
+            gameState.topCards.clear();
+        }else if(RulesReturn.getPoke_to_player()==Flag.QUIT){
+            gameState.topCards.clear();
+            gameState.stackCards.clear();
+        }else{
+            //Flag.DEFAULT_NO_CHANGE
+            for(Card it:gameState.topCards)
+                gameState.stackCards.add(it);
+            gameState.topCards.clear();
         }
+
+        //extra follow judge(update topCards)
+        if(actionType==Flag.ACTION_FOLLOW){
+            gameState.topCards=ClientCards;
+        }
+
+        //update last player
+        if (actionType == Flag.ACTION_CHALLENGE) {
+            gameState.lastPlayer = null;
+        } else if (actionType == Flag.ACTION_FOLLOW) {
+            gameState.lastPlayer = copyCurrentPlayer;
+        }
+
         gameState.step++;
     }
     private void endGame(Player winner){

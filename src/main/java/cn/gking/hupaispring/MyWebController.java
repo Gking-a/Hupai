@@ -29,7 +29,7 @@ public class MyWebController{
         if(gameController==null)return;
         else{
             //传参
-            gameController.solve(action.getAction());
+            gameController.solve(action.getAction(),action.getCards());
         }
     }
     @GetMapping("/join")
