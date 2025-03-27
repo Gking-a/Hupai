@@ -55,6 +55,11 @@ public class ClientStateChange {
         this.cardNum = cardNum;
     }
 
+    public List<Player> getRp() {
+        return rp;
+    }
+
+
     public int getStep() {
         return step;
     }
@@ -63,14 +68,15 @@ public class ClientStateChange {
         this.step = step;
     }
 
-    public void setRp(List<Player> rp) {
-        this.rp = rp;
-    }
-
     @Override
     public String toString() {
         return Util.toJson(this);
     }
+
+    public void setRp(List<Player> rp) {
+        this.rp = rp;
+    }
+
     public static class Builder {
         private final ClientStateChange instance = new ClientStateChange();
 

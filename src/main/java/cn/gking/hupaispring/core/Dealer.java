@@ -1,5 +1,6 @@
 package cn.gking.hupaispring.core;
 
+import java.util.ArrayList;
 import java.util.List;
 //发牌器
 public class Dealer {
@@ -17,6 +18,10 @@ public class Dealer {
     public void refresh(){}
     public void create(){}
     public List<List<Card>> getFinalPoke(){
-        return null;
+        ArrayList<List<Card>> objects = new ArrayList<>();
+        for (int i = 0; i < player; i++) {
+            objects.add(new ArrayList<>());
+        }
+        return objects;
     }
 }

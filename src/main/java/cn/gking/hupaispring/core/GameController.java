@@ -71,13 +71,15 @@ public class GameController {
             }
             gameState.topCards.clear();
         }else if(RulesReturn.getPoke_to_player()==Flag.QUIT){
+////////////            ////chuan Cardnum
             gameState.topCards.clear();
             gameState.stackCards.clear();
         }else{
             //Flag.DEFAULT_NO_CHANGE
-            for(Card it:gameState.topCards)
-                gameState.stackCards.add(it);
-            gameState.topCards.clear();
+ ////////////           //sb
+//            for(Card it:gameState.topCards)
+//                gameState.stackCards.add(it);
+//            gameState.topCards.clear();
         }
 
         //extra follow judge(update topCards)
@@ -95,7 +97,10 @@ public class GameController {
 
         gameState.step++;
 
-        //create ClientStateChange
+        //create ClientStateChange\
+
+        /////////flag player->position player
+        ////////also you can use builder,but not must
         ClientStateChange toClient = new ClientStateChange();
         if(actionType==Flag.ACTION_FOLLOW){
             toClient.setTurn_to_player(RulesReturn.getTurn_to_player());
@@ -104,23 +109,17 @@ public class GameController {
             toClient.setStep(gameState.step);
             toClient.setCardNum(0);
             toClient.setActiveCards(null);
-            toClient.setRp(gameState.players);
         }else if(actionType==Flag.ACTION_PASS){
             toClient.setTurn_to_player(RulesReturn.getTurn_to_player());
             toClient.setPoke_to_player(RulesReturn.getPoke_to_player());
             toClient.setAction(actionType);
             toClient.setStep(gameState.step);
-            toClient.setCardNum(0);
-            toClient.setActiveCards(null);
-            toClient.setRp(gameState.players);
         }else{
             //Flag.ACTION_CHALLENGE
             toClient.setTurn_to_player(RulesReturn.getTurn_to_player());
             toClient.setPoke_to_player(RulesReturn.getPoke_to_player());
             toClient.setAction(actionType);
             toClient.setStep(gameState.step);
-            toClient.setRp(gameState.players);
-
             List<Card>activeCards=new ArrayList<>(gameState.stackCards);
             activeCards.addAll(gameState.topCards);
             toClient.setActiveCards(activeCards);
@@ -138,14 +137,10 @@ public class GameController {
          */
         gameState.step++;
         ClientStateChange toClient = new ClientStateChange();
-        toClient.setTurn_to_player(Flag.GAME_END);
-        toClient.setPoke_to_player(Flag.GAME_END);
+        ////////////////////You should post position player in to Turn to player
+//        toClient.setTurn_to_player(Flag.GAME_END);
         toClient.setStep(gameState.step);
-        toClient.setRp(gameState.players);
         toClient.setAction(Flag.GAME_END);
-        toClient.setActiveCards(null);
-        toClient.setCardNum(0);
-
         gameState.changes.add(toClient);
     }
     public void startGame(DisposeCallback disposeCallback){
