@@ -30,13 +30,14 @@ public class GameController {
         AbstractStateChange RulesReturn = Rules.action(gameState, actionType);
 
         Player copyCurrentPlayer = gameState.currentPlayer;       //copy
+
         //turn to player solve & update current player
         if (RulesReturn.getTurn_to_player() == Flag.NEXT_PLAYER) {
             gameState.currentPlayer = players.get((players.indexOf(gameState.currentPlayer) + 1) % config.numberPlayer);
         } else if (RulesReturn.getTurn_to_player() == Flag.LAST_POKER) {
             gameState.currentPlayer = gameState.lastPlayer;
         } else if (RulesReturn.getTurn_to_player() == Flag.DEFAULT_NO_CHANGE) {
-            endGame(gameState.lastPlayer);
+            endGame();
             return;
         }
 
@@ -82,6 +83,7 @@ public class GameController {
         //extra follow judge(update topCards)
         if(actionType==Flag.ACTION_FOLLOW){
             gameState.topCards=ClientCards;
+            copyCurrentPlayer.cardnum-=ClientCards.size();
         }
 
         //update last player
@@ -92,9 +94,59 @@ public class GameController {
         }
 
         gameState.step++;
-    }
-    private void endGame(Player winner){
 
+        //create ClientStateChange
+        ClientStateChange toClient = new ClientStateChange();
+        if(actionType==Flag.ACTION_FOLLOW){
+            toClient.setTurn_to_player(RulesReturn.getTurn_to_player());
+            toClient.setPoke_to_player(RulesReturn.getPoke_to_player());
+            toClient.setAction(actionType);
+            toClient.setStep(gameState.step);
+            toClient.setCardNum(0);
+            toClient.setActiveCards(null);
+            toClient.setRp(gameState.players);
+        }else if(actionType==Flag.ACTION_PASS){
+            toClient.setTurn_to_player(RulesReturn.getTurn_to_player());
+            toClient.setPoke_to_player(RulesReturn.getPoke_to_player());
+            toClient.setAction(actionType);
+            toClient.setStep(gameState.step);
+            toClient.setCardNum(0);
+            toClient.setActiveCards(null);
+            toClient.setRp(gameState.players);
+        }else{
+            //Flag.ACTION_CHALLENGE
+            toClient.setTurn_to_player(RulesReturn.getTurn_to_player());
+            toClient.setPoke_to_player(RulesReturn.getPoke_to_player());
+            toClient.setAction(actionType);
+            toClient.setStep(gameState.step);
+            toClient.setRp(gameState.players);
+
+            List<Card>activeCards=new ArrayList<>(gameState.stackCards);
+            activeCards.addAll(gameState.topCards);
+            toClient.setActiveCards(activeCards);
+            toClient.setCardNum(toClient.getActiveCards().size());
+        }
+        gameState.changes.add(toClient);
+    }
+    private void endGame(){
+        /*
+        *
+        * endGame状态传参说明：
+        * 传出的ClientStateChange中step更新，rp赋值，turn_to_player及poke_to_player及action赋值Flag.GAME_END
+        * 其余均不用管
+        *
+         */
+        gameState.step++;
+        ClientStateChange toClient = new ClientStateChange();
+        toClient.setTurn_to_player(Flag.GAME_END);
+        toClient.setPoke_to_player(Flag.GAME_END);
+        toClient.setStep(gameState.step);
+        toClient.setRp(gameState.players);
+        toClient.setAction(Flag.GAME_END);
+        toClient.setActiveCards(null);
+        toClient.setCardNum(0);
+
+        gameState.changes.add(toClient);
     }
     public void startGame(DisposeCallback disposeCallback){
         this.disposeCallback=disposeCallback;

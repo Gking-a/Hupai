@@ -21,9 +21,7 @@ public class Flag {
 
     public static int REGISTER_PLAYER=10;
 
-    public static int GAME_LOSE=7;
-
-    public static int GAME_WIN=14;
+    public static int GAME_END=-1;
 //    public static int CARD_POST=2;
 //    public static int CARD_QUIT=3;
 }

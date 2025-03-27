@@ -7,7 +7,9 @@ public class ClientStateChange {
     int turn_to_player;
     int poke_to_player;;
     List<Card> activeCards;
+    //一切牌类变动（揭牌展示揭牌，取牌展示取牌）
     List<Player> rp;
+    //当前players列表
     int action;
     int cardNum;
     int step;
@@ -51,6 +53,18 @@ public class ClientStateChange {
 
     public void setCardNum(int cardNum) {
         this.cardNum = cardNum;
+    }
+
+    public int getStep() {
+        return step;
+    }
+
+    public void setStep(int step) {
+        this.step = step;
+    }
+
+    public void setRp(List<Player> rp) {
+        this.rp = rp;
     }
 
     @Override
