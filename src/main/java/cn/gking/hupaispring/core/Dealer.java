@@ -20,7 +20,7 @@ public class Dealer {
     public List<List<Card>> getFinalPoke(){
         ArrayList<List<Card>> objects = new ArrayList<>();
         for (int i = 0; i < player; i++) {
-            objects.add(new ArrayList<>());
+            objects.add(List.of(new Card(5,1),new Card(1,4)));
         }
         return objects;
     }
