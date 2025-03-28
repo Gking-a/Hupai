@@ -25,7 +25,7 @@ public class GameController {
     public interface DisposeCallback {
         void onFinish(GameController gameController);
     }
-    public void solve(int actionType, List<Card>ClientCards){
+    public void solve(int actionType, List<Card>ClientCards,int reclaim){
         //传参运算
         AbstractStateChange RulesReturn = Rules.action(gameState, actionType);
 
@@ -114,7 +114,16 @@ public class GameController {
             toClient.setPoke_to_player(RulesReturn.getPoke_to_player());
             toClient.setAction(actionType);
             toClient.setStep(gameState.step);
-        }else{
+        }else if(actionType==Flag.ACTION_RECLAIM){
+            toClient=new ClientStateChange.Builder()
+                    .step(gameState.step)
+                    .action(Flag.ACTION_RECLAIM)
+                    .cardNum(ClientCards.size())
+                    .pokeToPlayer(reclaim)
+                    .turnToPlayer(RulesReturn.getTurn_to_player())
+                    .build();
+        }
+        else{
             //Flag.ACTION_CHALLENGE
             toClient.setTurn_to_player(RulesReturn.getTurn_to_player());
             toClient.setPoke_to_player(RulesReturn.getPoke_to_player());
