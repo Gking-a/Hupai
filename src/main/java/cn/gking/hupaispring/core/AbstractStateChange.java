@@ -6,6 +6,9 @@ public class AbstractStateChange {
     //牌给谁(default用于保留)
     int poke_to_player;
 
+    AbstractStateChange(){}
+    AbstractStateChange(int x,int y){this.turn_to_player = x;this.poke_to_player = y;}
+
     public int getTurn_to_player() {
         return turn_to_player;
     }
