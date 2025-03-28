@@ -26,6 +26,7 @@ public class Dealer {
         for (int i = 1; i <= player; ++i)
             for (int j = 1; j <= 13; ++j)
                 for (int k = 1; k <= 4; ++k) cards.add(new Card(j,k));
+        for (int i = 1; i <= king; ++i) cards.add(new Card(0,5));
         shuffle(cards, new Random());
         ArrayList<List<Card>> objects = new ArrayList<>();
 
