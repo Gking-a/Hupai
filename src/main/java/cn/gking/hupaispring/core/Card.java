@@ -5,4 +5,5 @@ public class Card {
     int rank;
     //1-5
     int suit;
+    Card (int x, int y) {this.rank = x; this.suit = y;}
 }
