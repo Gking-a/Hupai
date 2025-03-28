@@ -19,11 +19,9 @@ public class Dealer {
             this.discard=(poke*52+king)%player;
         }
     }
-    public void refresh(){}
-    public void create(){}
     public List<List<Card>> getFinalPoke(){
         List<Card> cards=new ArrayList<>();
-        for (int i = 1; i <= player; ++i)
+        for (int i = 1; i <= poke; ++i)
             for (int j = 1; j <= 13; ++j)
                 for (int k = 1; k <= 4; ++k) cards.add(new Card(j,k));
         for (int i = 1; i <= king; ++i) cards.add(new Card(0,5));

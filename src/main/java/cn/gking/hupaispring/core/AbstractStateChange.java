@@ -24,4 +24,12 @@ public class AbstractStateChange {
     public void setPoke_to_player(int poke_to_player) {
         this.poke_to_player = poke_to_player;
     }
+
+    @Override
+    public String toString() {
+        return "AbstractStateChange{" +
+                "turn_to_player=" + turn_to_player +
+                ", poke_to_player=" + poke_to_player +
+                '}';
+    }
 }

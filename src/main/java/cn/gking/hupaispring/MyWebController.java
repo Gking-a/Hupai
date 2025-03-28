@@ -24,12 +24,14 @@ public class MyWebController{
         if(step==0)return gameController.lastChange();
         return gameController.getStep(step);
     }
-    @GetMapping("/act")
+    @PostMapping("/act")
     public void room(@RequestBody ClientAction action){
         GameController gameController = rooms.get(action.getRoomid());
+        System.out.println("Action:"+action);
         if(gameController==null)return;
         else{
             //传参
+            System.out.println("SOVLE?");
             gameController.solve(action.getAction(),action.getCards(),action.getReclaim());
         }
     }

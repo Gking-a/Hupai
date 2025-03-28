@@ -19,16 +19,23 @@ public class Rules {
         }
         if (action == Flag.ACTION_CHALLENGE) {
             boolean chSuccess = false;
-            for (Card i:gameState.topCards) if (i.rank != gameState.claim && i.suit != Flag.QUIT){
+            for (Card i:gameState.topCards) if (i.rank != gameState.claim && i.suit != Flag.CARD_JOKER){
                 chSuccess = true;
                 break;
             }
+            System.out.println(gameState.claim);
+            gameState.topCards.forEach(e-> System.out.println(e.rank));
+            System.out.println(chSuccess);
             if (chSuccess) result = new AbstractStateChange(Flag.CHALLENGER, Flag.LAST_POKER);
             else result = new AbstractStateChange(Flag.LAST_POKER,Flag.CHALLENGER);
         }
         if (action == Flag.ACTION_FOLLOW) {
             result.poke_to_player = Flag.DEFAULT_NO_CHANGE;
             result.turn_to_player = Flag.NEXT_PLAYER;
+        }
+        if(action==Flag.ACTION_RECLAIM){
+            result.turn_to_player=Flag.NEXT_PLAYER;
+            result.poke_to_player=Flag.DEFAULT_NO_CHANGE;
         }
         return result;
     }

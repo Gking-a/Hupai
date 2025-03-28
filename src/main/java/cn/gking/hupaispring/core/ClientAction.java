@@ -46,4 +46,14 @@ public class ClientAction {
     public void setAction(int action) {
         this.action = action;
     }
+
+    @Override
+    public String toString() {
+        return "ClientAction{" +
+                "action=" + action +
+                ", cards=" + cards +
+                ", roomid=" + roomid +
+                ", reclaim=" + reclaim +
+                '}';
+    }
 }

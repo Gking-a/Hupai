@@ -17,4 +17,19 @@ public class State {
         this.roomConfig = roomConfig;
     }
     void initState(List<Player> players){}
+
+    @Override
+    public String toString() {
+        return "State{" +
+                "roomConfig=" + roomConfig +
+                ", currentPlayer=" + currentPlayer +
+                ", lastPlayer=" + lastPlayer +
+                ", stackCards=" + stackCards +
+                ", topCards=" + topCards +
+                ", players=" + players +
+                ", changes=" + changes +
+                ", claim=" + claim +
+                ", step=" + step +
+                '}';
+    }
 }
