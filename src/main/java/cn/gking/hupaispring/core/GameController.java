@@ -1,5 +1,7 @@
 package cn.gking.hupaispring.core;
 
+import org.apache.tomcat.util.digester.Rule;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,10 +28,18 @@ public class GameController {
         void onFinish(GameController gameController);
     }
     public void solve(int actionType, List<Card>ClientCards,int reclaim){
+        //防空参
+        if(ClientCards==null){
+            ClientCards=new ArrayList<>();
+        }
+
+        ClientStateChange toClient = new ClientStateChange.Builder().cardNum(0).build();
+
         //传参运算
         AbstractStateChange RulesReturn = Rules.action(gameState, actionType);
 
         Player copyCurrentPlayer = gameState.currentPlayer;       //copy
+        Player copyLastPlayer = gameState.lastPlayer;             //copy
 
         //turn to player solve & update current player
         if (RulesReturn.getTurn_to_player() == Flag.NEXT_PLAYER) {
@@ -44,42 +54,35 @@ public class GameController {
         //poke to player solve
         if(RulesReturn.getPoke_to_player()==Flag.LAST_POKER){
             //stackcards to last player
-            for(Card it:gameState.stackCards){
-                gameState.lastPlayer.cards.add(it);
-                gameState.lastPlayer.cardnum++;
-            }
+            gameState.lastPlayer.cards.addAll(gameState.stackCards);
+            gameState.lastPlayer.cardnum+=gameState.stackCards.size();
             gameState.stackCards.clear();
 
             //topcards to last player
-            for(Card it:gameState.topCards){
-                gameState.lastPlayer.cards.add(it);
-                gameState.lastPlayer.cardnum++;
-            }
+            gameState.lastPlayer.cards.addAll(gameState.topCards);
+            gameState.lastPlayer.cardnum+=gameState.topCards.size();
             gameState.topCards.clear();
         }else if(RulesReturn.getPoke_to_player()==Flag.CHALLENGER){
             //stackcards to challenge player
-            for(Card it:gameState.stackCards){
-                copyCurrentPlayer.cards.add(it);
-                copyCurrentPlayer.cardnum++;
-            }
+            copyCurrentPlayer.cards.addAll(gameState.stackCards);
+            copyCurrentPlayer.cardnum+=gameState.stackCards.size();
             gameState.stackCards.clear();
 
             //topcards to challenge player
-            for(Card it:gameState.topCards){
-                copyCurrentPlayer.cards.add(it);
-                copyCurrentPlayer.cardnum++;
-            }
+            copyCurrentPlayer.cards.addAll(gameState.topCards);
+            copyCurrentPlayer.cardnum+=gameState.topCards.size();
             gameState.topCards.clear();
         }else if(RulesReturn.getPoke_to_player()==Flag.QUIT){
-////////////            ////chuan Cardnum
+            //cardnum update
+            toClient.setCardNum(gameState.topCards.size()+gameState.stackCards.size());
             gameState.topCards.clear();
             gameState.stackCards.clear();
         }else{
             //Flag.DEFAULT_NO_CHANGE
- ////////////           //sb
-//            for(Card it:gameState.topCards)
-//                gameState.stackCards.add(it);
-//            gameState.topCards.clear();
+            if(ClientCards.size()!=0) {
+                gameState.stackCards.addAll(gameState.topCards);
+                gameState.topCards.clear();
+            }
         }
 
         //extra follow judge(update topCards)
@@ -97,23 +100,27 @@ public class GameController {
 
         gameState.step++;
 
-        //create ClientStateChange\
-
-        /////////flag player->position player
-        ////////also you can use builder,but not must
-        ClientStateChange toClient = new ClientStateChange();
         if(actionType==Flag.ACTION_FOLLOW){
-            toClient.setTurn_to_player(RulesReturn.getTurn_to_player());
-            toClient.setPoke_to_player(RulesReturn.getPoke_to_player());
+            //xyp think it's necessary
+            copyCurrentPlayer.cardnum-=ClientCards.size();
+
+            toClient.setTurn_to_player(gameState.players.indexOf(gameState.currentPlayer));
+            toClient.setPoke_to_player(-1);
+            //no poke to player
+
             toClient.setAction(actionType);
             toClient.setStep(gameState.step);
-            toClient.setCardNum(0);
+            //xyp:FOLLOW => cardnum=跟牌数
+            toClient.setCardNum(ClientCards.size());
             toClient.setActiveCards(null);
         }else if(actionType==Flag.ACTION_PASS){
-            toClient.setTurn_to_player(RulesReturn.getTurn_to_player());
-            toClient.setPoke_to_player(RulesReturn.getPoke_to_player());
+            toClient.setTurn_to_player(gameState.players.indexOf(gameState.currentPlayer));
+            toClient.setPoke_to_player(-1);
+            //no poke to player(include poke quit state)
+
             toClient.setAction(actionType);
             toClient.setStep(gameState.step);
+            toClient.setActiveCards(null);
         }else if(actionType==Flag.ACTION_RECLAIM){
             toClient=new ClientStateChange.Builder()
                     .step(gameState.step)
@@ -125,8 +132,14 @@ public class GameController {
         }
         else{
             //Flag.ACTION_CHALLENGE
-            toClient.setTurn_to_player(RulesReturn.getTurn_to_player());
-            toClient.setPoke_to_player(RulesReturn.getPoke_to_player());
+            toClient.setTurn_to_player(gameState.players.indexOf(gameState.currentPlayer));
+            if(RulesReturn.getPoke_to_player()==Flag.CHALLENGER){
+                toClient.setPoke_to_player(gameState.players.indexOf(copyCurrentPlayer));
+            }
+            else{
+                toClient.setPoke_to_player(gameState.players.indexOf(copyLastPlayer));
+            }
+
             toClient.setAction(actionType);
             toClient.setStep(gameState.step);
             List<Card>activeCards=new ArrayList<>(gameState.stackCards);
@@ -146,8 +159,15 @@ public class GameController {
          */
         gameState.step++;
         ClientStateChange toClient = new ClientStateChange();
-        ////////////////////You should post position player in to Turn to player
-//        toClient.setTurn_to_player(Flag.GAME_END);
+
+        int winner=0;
+        for(;gameState.players.get(winner).cards.size()!=0;winner++){
+            if(winner==gameState.roomConfig.numberPlayer){
+                break;
+            }
+        }
+        toClient.setTurn_to_player(winner);
+
         toClient.setStep(gameState.step);
         toClient.setAction(Flag.GAME_END);
         gameState.changes.add(toClient);
