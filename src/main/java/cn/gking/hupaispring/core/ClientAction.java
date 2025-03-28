@@ -6,12 +6,21 @@ public class ClientAction {
     int action;
     List<Card> cards;
     int roomid;
-    String name;
+    public int reclaim;
 
-    public ClientAction(int action, List<Card> cards, int roomid) {
+    public int getReclaim() {
+        return reclaim;
+    }
+
+    public void setReclaim(int reclaim) {
+        this.reclaim = reclaim;
+    }
+
+    public ClientAction(int action, List<Card> cards, int roomid, int reclaim) {
         this.action = action;
         this.cards = cards;
         this.roomid = roomid;
+        this.reclaim = reclaim;
     }
 
     public int getRoomid() {

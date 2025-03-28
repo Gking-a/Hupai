@@ -20,6 +20,7 @@ public class MyWebController{
     public String room(@RequestParam int id,@RequestParam(defaultValue = "0") int step){
         GameController gameController = rooms.get(id);
         if(gameController==null)return "";
+        System.out.println(gameController.lastChange());
         if(step==0)return gameController.lastChange();
         return gameController.getStep(step);
     }
@@ -29,18 +30,18 @@ public class MyWebController{
         if(gameController==null)return;
         else{
             //传参
-            gameController.solve(action.getAction(),action.getCards());
+            gameController.solve(action.getAction(),action.getCards(),action.getReclaim());
         }
     }
     @GetMapping("/join")
     @ResponseBody
     public String join(@RequestParam int id,@RequestParam String name,@RequestParam(defaultValue = "0")int pos){
         GameController gameController = rooms.get(id);
-        if(gameController==null)return "{\"status\"=500}";
+        if(gameController==null)return "{\"status\":500}";
         else{
             Player o = new Player(name);
             if(gameController.players.contains(o)){
-                if(pos==0)return "{\"status\"=500}";
+                if(pos==0)return "{\"status\":500}";
                 else {
                     Iterator<Player> iterator = gameController.players.iterator();
                     Player po=null,pn=null;
@@ -52,7 +53,7 @@ public class MyWebController{
                     po.setPosition(pn.getPosition());
                     pn.setPosition(pos);
                     gameController.players.get(gameController.players.indexOf(o)).setPosition(pos);
-                    return "{\"status\"=200}";
+                    return "{\"status\":200}";
                 }
             }
             else {

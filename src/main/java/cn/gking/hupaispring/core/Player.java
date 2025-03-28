@@ -11,6 +11,39 @@ public class Player {
     List<Card> cards=new ArrayList<>();
     int position;
     int cardnum;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getTeam() {
+        return team;
+    }
+
+    public void setTeam(int team) {
+        this.team = team;
+    }
+
+    public List<Card> getCards() {
+        return cards;
+    }
+
+    public void setCards(List<Card> cards) {
+        this.cards = cards;
+    }
+
+    public int getCardnum() {
+        return cardnum;
+    }
+
+    public void setCardnum(int cardnum) {
+        this.cardnum = cardnum;
+    }
+
     public Player(String name) {
         this.name = name;
     }
