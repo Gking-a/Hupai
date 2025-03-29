@@ -10,6 +10,32 @@ import cn.gking.hupaispring.core.*;
 @Controller
 @RequestMapping("/hupai")
 public class MyWebController{
+    public MyWebController() {
+        HupaiSpringApplication.gcThread=new Thread(){
+            @Override
+            public void run() {
+                while (true){
+                    try {
+                        Thread.sleep(6*60*60*1000);
+                        ArrayList<Integer> theIndexes = new ArrayList<>();
+                        rooms.forEach((integer, gameController) -> {
+                            if(System.currentTimeMillis()-gameController.timestamp>6*60*60*1000){
+                                theIndexes.add(integer);
+                            }
+                        });
+                        theIndexes.forEach(integer -> {
+                            rooms.remove(integer);
+                        });
+                        theIndexes.clear();
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        };
+        HupaiSpringApplication.gcThread.start();
+    }
+
     Map<Integer, GameController> rooms=new HashMap<>();
     Random random=new Random();
 //    @ResponseBody

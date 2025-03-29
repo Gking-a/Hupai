@@ -1,5 +1,7 @@
 package cn.gking.hupaispring.core;
 
+import java.util.Objects;
+
 public class Card {
     //1-13
     int rank;
@@ -21,5 +23,17 @@ public class Card {
 
     public void setSuit(int suit) {
         this.suit = suit;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (!(object instanceof Card card)) return false;
+        return rank == card.rank && suit == card.suit;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(rank, suit);
     }
 }

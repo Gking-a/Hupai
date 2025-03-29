@@ -17,6 +17,7 @@ public class Flag {
     public static int ACTION_FOLLOW=2;
     public static int ACTION_CHALLENGE=3;
     public static int ACTION_RECLAIM=4;
+    public static int ACTION_SPECIAL_SHOW=5;
 
     public static int CARD_JOKER=5;
 

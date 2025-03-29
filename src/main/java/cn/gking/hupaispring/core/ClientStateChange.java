@@ -122,5 +122,9 @@ public class ClientStateChange {
             // 可在此处添加验证逻辑
             return instance;
         }
+        public Builder setActiveCards(List<Card> cards){
+            instance.activeCards=cards;
+            return this;
+        }
     }
 }
